@@ -1,2 +1,33 @@
 Windows 12 
 нужен linux(любой)
+для debian
+вот команда
+mkdir -p win12-theme/DEBIAN && \
+mkdir -p win12-theme/usr/local/bin && \
+cp "Windows 12.sh" win12-theme/usr/local/bin/install-win12-theme && \
+chmod 755 win12-theme/usr/local/bin/install-win12-theme && \
+cat > win12-theme/DEBIAN/control << 'EOF'
+Package: win12-theme
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Debian User <user@debian>
+Description: Windows 12 Theme Installer for KDE Plasma
+ Устанавливает тему Win12OS-kde в Debian (KDE Plasma)
+EOF
+&& \
+cat > win12-theme/DEBIAN/postinst << 'EOF'
+#!/bin/bash
+echo "✅ win12-theme установлен"
+echo "Запустите установку темы: install-win12-theme"
+EOF
+&& \
+chmod 755 win12-theme/DEBIAN/postinst && \
+dpkg-deb --build --root-owner-group win12-theme win12-theme_1.0.0_all.deb
+дальше водим это sudo dpkg -i win12-theme_1.0.0_all.deb
+Если будут ошибки с зависимостями (например, lookandfeeltool), выполните:
+sudo apt install --fix-broken -y
+водим это 
+install-win12-theme
+конец
